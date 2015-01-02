@@ -123,7 +123,7 @@ namespace Learn.FromRuby.Try
         public void when_trying_to_call_static_try_with_function_with_struct_return_that_succeeds_should_return_true_and_set_output()
         {
             int output;
-            Handle.Try(() => int.Parse("1"), out output).Should().Be(true);
+            With.Try(() => int.Parse("1"), out output).Should().Be(true);
             output.Should().Be(1);
         }
 
@@ -131,7 +131,7 @@ namespace Learn.FromRuby.Try
         public void when_trying_to_call_static_try_with_function_with_struct_return_that_fails_should_return_false_and_set_output_to_default_value()
         {
             int output;
-            Handle.Try(() => int.Parse("abc"), out output).Should().Be(false);
+            With.Try(() => int.Parse("abc"), out output).Should().Be(false);
             output.Should().Be(default(int));
         }
 
@@ -141,7 +141,7 @@ namespace Learn.FromRuby.Try
             var expectedValue = new TestObject(4);
             TestObject output;
 
-            Handle.Try(() => expectedValue, out output).Should().Be(true);
+            With.Try(() => expectedValue, out output).Should().Be(true);
             output.Should().Be(expectedValue);
         }
 
@@ -150,7 +150,7 @@ namespace Learn.FromRuby.Try
         {
             TestObject output;
 
-            Handle.Try(() => {throw new ArgumentException();}, out output).Should().Be(false);
+            With.Try(() => {throw new ArgumentException();}, out output).Should().Be(false);
             output.Should().BeNull();
         }
     }

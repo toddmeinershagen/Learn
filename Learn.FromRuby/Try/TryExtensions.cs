@@ -52,11 +52,11 @@ namespace Learn.FromRuby.Try
         public static bool Try<TInput, TOutput>(this TInput value, Func<TInput, TOutput> function, out TOutput result)
             where TInput : class
         {
-            return Handle.Try(() => value.Try(function), out result);
+            return With.Try(() => value.Try(function), out result);
         }
     }
 
-    public static class Handle
+    public static class With
     {
         /// <summary>
         /// Tries the specified function and returns a true if successful, a false if not.
@@ -67,7 +67,7 @@ namespace Learn.FromRuby.Try
         /// For example, instead of
         /// <code>if (int.TryParse("0", out value)) { doSomething(value); }</code>
         /// you can just call
-        /// <code>if (Handle.Try(() => int.Parse("0"), out value)) { doSomething(value); }</code>
+        /// <code>if (With.Try(() => int.Parse("0"), out value)) { doSomething(value); }</code>
         /// </remarks>
         /// <typeparam name="TOutput">The type of the output.</typeparam>
         /// <param name="function">The function.</param>
