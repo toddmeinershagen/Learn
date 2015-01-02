@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace Learn.FromRuby.Try
 {
@@ -19,10 +20,20 @@ namespace Learn.FromRuby.Try
         public static TOutput Try<TInput, TOutput>(this TInput value, Func<TInput, TOutput> function)
             where TInput : class
         {
-            if (value == null)
-                return default(TOutput);
+            try
+            {
+                if (value == null)
+                    return default(TOutput);
 
-            return function(value);
+                return function(value);
+
+            }
+            catch (NullReferenceException)
+            {
+
+                return default(TOutput);
+            }
+
         }
 
         /// <summary>
@@ -30,9 +41,7 @@ namespace Learn.FromRuby.Try
         /// </summary>
         /// <remarks>
         /// After looking at the Try() from Ruby, I thought this extension would get rid of the need to implement all of the one off method implementations
-        /// of TryMethodName within the .NET framework.  
-        /// 
-        /// For instance, instead of if (int.TryParse("0", out value)){ doSomething(value); } you can just call int.Try(x => x.Parse("0")
+        /// of TryMethodName within the .NET framework.
         /// </remarks>
         /// <typeparam name="TInput"></typeparam>
         /// <typeparam name="TOutput"></typeparam>
@@ -53,7 +62,12 @@ namespace Learn.FromRuby.Try
         /// Tries the specified function and returns a true if successful, a false if not.
         /// </summary>
         /// <remarks>
-        /// This allows for calling static functions in a graceful way.  If you have an object, you can just call Try() instead.
+        /// This allows for calling static functions in a graceful way.  If you have an object, you can just call Try() instead.  
+        /// 
+        /// For example, instead of
+        /// <code>if (int.TryParse("0", out value)) { doSomething(value); }</code>
+        /// you can just call
+        /// <code>if (Handle.Try(() => int.Parse("0"), out value)) { doSomething(value); }</code>
         /// </remarks>
         /// <typeparam name="TOutput">The type of the output.</typeparam>
         /// <param name="function">The function.</param>

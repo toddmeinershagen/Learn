@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
+using FluentAssertions.Common;
 using NUnit.Framework;
 
 namespace Learn.FromRuby.Try
@@ -49,6 +52,22 @@ namespace Learn.FromRuby.Try
 
             value.Try(x => x.GetChild()).Try(x => x.Value).Should().Be(default(int));
             value.Try(x => x.GetChild()).Try(x => x.GetChild()).Should().BeNull();
+        }
+
+        [Test]
+        public void given_chain_of_methods_with_the_first_returning_null_when_trying_to_call_functions_should_return_default_or_null_values()
+        {
+            var names = new List<Person>() { new Person { FirstName = "Todd", LastName = "Meinershagen" } };
+            var michaels = names.Where(x => x.FirstName == "Michael");
+
+            michaels
+                .Try(x => x.FirstOrDefault().FirstName.Capitalize().Reverse()).Should().BeNull();
+        }
+
+        class Person
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
         }
     }
 
